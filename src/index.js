@@ -1,69 +1,107 @@
-import React, { useState, useEffect } from "react";
-import { render, Color, Box, useInput } from "ink";
-import Spinner from 'ink-spinner';
+import React, { useState, useEffect, Fragment } from "react";
+import { render, Color, Box, Text, useInput } from "ink";
+import Spinner from "ink-spinner";
 
-import GallerySelect from './components/GallerySelect';
-import Search from './components/Search';
+import SelectInput from "./components/SelectInput";
+import List from "./components/List";
+import Search from "./components/Search";
+import Gallery from "./components/Gallery";
 
-const Spider = require('./api/spider');
-const open = require('open');
+const Spider = require("./api/spider");
+const open = require("open");
 
 const App = () => {
     const [loading, setLoading] = useState(true);
-    const [showSearch, setShowSearch] = useState(false);
+    const [page, setPage] = useState("LIST");
     const [galleries, setGalleries] = useState([]);
+    const [selected, setSelected] = useState(null);
     const [prev, setPrev] = useState(null);
     const [next, setNext] = useState(null);
 
-    const fetchData = async (url) => {
+    const fetchData = async url => {
         const { data, next, prev } = await Spider.getOnePage(url);
         setGalleries(data);
         setNext(next);
         setPrev(prev);
         setLoading(false);
-    }
+    };
 
     useEffect(() => {
-        fetchData('https://exhentai.org/');
+        fetchData("https://exhentai.org/");
     }, []);
 
     useInput((input, key) => {
-		if (input === 's') {
-			setShowSearch(true);
-		}
-	});
+        if (input === "s") {
+            setPage("SEARCH");
+        } else if (key.escape) {
+            setPage("EXIT");
+        }
+    });
 
     const selectHandler = async ({ label, value }) => {
-        if (value === 'next') {
+        if (value === "next") {
             setLoading(true);
             fetchData(next);
-        } else if (value === 'prev') {
+        } else if (value === "prev") {
             setLoading(true);
             fetchData(prev);
         } else {
-            const url = `https://exhentai.org/g/${galleries[value].gid}/${galleries[value].token}`;
-            await open(url);
+            setSelected(value);
+            setPage("GALLERY");
+            // const url = `https://exhentai.org/g/${galleries[value].gid}/${galleries[value].token}`;
+            // await open(url);
         }
-    }
+    };
     const searchHandler = url => {
         setLoading(true);
         fetchData(url);
-        setShowSearch(false);
-    }
+        setPage("LIST");
+    };
+
+    const exitHandler = ({ _, value }) => {
+        if (value === 0) process.exit();
+        else setPage("LIST");
+    };
 
     if (loading) {
         return (
             <Box>
-                <Color green><Spinner type="dots" /></Color>
-                {' Loading'}
+                <Color green>
+                    <Spinner type="dots" />
+                </Color>
+                {" Loading"}
             </Box>
-        )
-    }
-    if (showSearch) {
-        return <Search callback={searchHandler} />
+        );
     }
 
-    return <GallerySelect list={galleries} handleSelect={selectHandler} prev={prev} next={next} />;
-}
+    switch (page) {
+        case "LIST":
+            return (
+                <List
+                    list={galleries}
+                    handleSelect={selectHandler}
+                    prev={prev}
+                    next={next}
+                />
+            );
+        case "SEARCH":
+            return <Search callback={searchHandler} />;
+        case "GALLERY":
+            return <Gallery data={galleries[selected]} />;
+        case "EXIT":
+            return (
+                <Fragment>
+                    <Text>Do you really want to exit?</Text>
+                    <SelectInput
+                        items={[
+                            { label: "Yes", value: 0 },
+                            { label: "No", value: 1 }
+                        ]}
+                        onSelect={exitHandler}
+                    />
+                </Fragment>
+            );
+    }
+};
 
 render(<App />);

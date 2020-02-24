@@ -62,7 +62,7 @@ export default ({ list, handleSelect, prev, next }) => {
                 </Box>
                 <Text bold>Title</Text>
             </Box>
-            <Divider width={100} />
+            <Divider />
             <Box>
                 <Box marginRight={2} flexDirection="column" justifyContent="flex-end">
                     <SelectInput items={buildSelector()} onSelect={handleSelect} />
