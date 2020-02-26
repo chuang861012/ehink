@@ -1,14 +1,10 @@
-const dotenv = require("dotenv");
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-dotenv.config();
+const path = require("path");
+const LocalStorage = require("node-localstorage").LocalStorage;
 
-const headers = {
-    "User-Agent":
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
-    Cookie: process.env.HENTAI_COOKIE
-};
+const localStorage = new LocalStorage(path.resolve(__dirname, "..", "local_storage"));
 
 const parseLink = link => {
     const gid = parseInt(link.split("/")[4]);
@@ -16,7 +12,7 @@ const parseLink = link => {
     return [gid, token];
 };
 
-async function scrapePage(url) {
+async function scrapePage(url, headers) {
     const res = await axios.get(url, { headers });
 
     const $ = cheerio.load(res.data);
@@ -40,18 +36,22 @@ async function scrapePage(url) {
 }
 
 class Spider {
-    // static async getGallery(url) {
-    //     const result = await this.fetchApi([parseUrl(url)]);
-    // }
+    constructor() {
+        this.headers = {
+            "User-Agent":
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+            Cookie: localStorage.getItem("COOKIES")
+        };
+    }
 
-    static async getOnePage(url) {
-        const { galleryIdentifiers, next, prev } = await scrapePage(url);
+    async getOnePage(url) {
+        const { galleryIdentifiers, next, prev } = await scrapePage(url, this.headers);
         const pending = await Promise.all(this.fetchAllGalleries(galleryIdentifiers));
         const data = pending.reduce((acc, val) => acc.concat(val), []);
         return { data, next, prev };
     }
 
-    static fetchAllGalleries(galleryIdentifiers) {
+    fetchAllGalleries(galleryIdentifiers) {
         const pending = [];
 
         while (galleryIdentifiers.length > 0) {
@@ -63,7 +63,7 @@ class Spider {
         return pending;
     }
 
-    static async fetchApi(data) {
+    async fetchApi(data) {
         const result = await axios.post(
             "https://api.e-hentai.org/api.php",
             JSON.stringify({
@@ -80,5 +80,6 @@ class Spider {
 //     const data = await Spider.getOnePage('https://exhentai.org/');
 //     console.log(data.data[0].tags)
 // })()
+
 
 module.exports = Spider;

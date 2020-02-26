@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Box } from "ink";
 import TextInput from "ink-text-input";
 
-import SelectInput from './SelectInput';
+import SelectInput from "./SelectInput";
 
-export default ({ callback }) => {
+export default ({ domain, callback }) => {
     // 0: plain text, 1:artist
     const [mode, setMode] = useState(null);
     const [query, setQuery] = useState("");
@@ -16,10 +16,10 @@ export default ({ callback }) => {
     const handleSubmit = value => {
         switch (mode) {
             case 0:
-                callback(`https://exhentai.org/?f_search=${value}`);
+                callback(`${domain || "https://e-hentai.org"}/?f_search=${value}`);
                 break;
             case 1:
-                callback(`https://exhentai.org/tag/artist:${value}`);
+                callback(`${domain || "https://e-hentai.org"}/tag/artist:${value}`);
                 break;
         }
     };

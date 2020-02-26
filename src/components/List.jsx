@@ -1,15 +1,15 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Color, Text, Box } from "ink";
-import SelectInput from './SelectInput';
+import SelectInput from "./SelectInput";
 import Divider from "ink-divider";
 
-export default ({ list, handleSelect, prev, next }) => {
+export default ({ list, listSelectHandler, prev, next, headIndex }) => {
     const buildSelector = () => {
         const items = list.map((_, i) => {
-            return { label: `${i + 1}`, value: i };
+            return { label: `${headIndex + i}`, value: i };
         });
-        prev && items.push({ label: "prev", value: "prev" });
-        next && items.push({ label: "next", value: "next" });
+        prev && items.push({ label: "prev", value: "PREV" });
+        next && items.push({ label: "next", value: "NEXT" });
         return items;
     };
 
@@ -44,6 +44,8 @@ export default ({ list, handleSelect, prev, next }) => {
         return label;
     };
 
+    if (list.length === 0) return <Text bold>No result.</Text>;
+
     return (
         <Box flexDirection="column">
             <Box>
@@ -65,7 +67,7 @@ export default ({ list, handleSelect, prev, next }) => {
             <Divider />
             <Box>
                 <Box marginRight={2} flexDirection="column" justifyContent="flex-end">
-                    <SelectInput items={buildSelector()} onSelect={handleSelect} />
+                    <SelectInput items={buildSelector()} onSelect={listSelectHandler} />
                 </Box>
                 <Box flexDirection="column">{list.map(renderGallery)}</Box>
             </Box>
