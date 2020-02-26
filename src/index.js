@@ -12,7 +12,7 @@ import Setting from "./components/Setting";
 import Error from "./components/Error";
 
 const Spider = require("./api/spider");
-// const open = require("open");
+const open = require("open");
 const path = require("path");
 const LocalStorage = require("node-localstorage").LocalStorage;
 
@@ -100,7 +100,7 @@ const App = () => {
             // setSelected(value);
             // setPage("GALLERY");
             const url = `${domain}/g/${galleries[value].gid}/${galleries[value].token}`;
-            // await open(url);
+            await open(url);
         }
     };
     const searchHandler = url => {
