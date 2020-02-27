@@ -21,12 +21,16 @@ const localStorage = new LocalStorage(path.resolve(__dirname, "local_storage"));
 const App = () => {
     const [loading, setLoading] = useState(false);
     const [exiting, setExiting] = useState(false);
-    const [domain, setDomain] = useState(null);
-    const [page, setPage] = useState("ENTRY");
-    const [galleries, setGalleries] = useState([]);
-    const [prev, setPrev] = useState(null);
-    const [next, setNext] = useState(null);
-    const [headIndex, setHeadIndex] = useState(null);
+
+    const [domain, setDomain] = useState(null); // E or Ex
+
+    const [page, setPage] = useState("ENTRY"); // routing
+
+    const [galleries, setGalleries] = useState([]); // galleries list
+
+    const [prev, setPrev] = useState(null); // url to last page
+    const [next, setNext] = useState(null); // url to next page
+    const [headIndex, setHeadIndex] = useState(null); // first item id
 
     const cookies = localStorage.getItem("COOKIES");
 
@@ -97,8 +101,6 @@ const App = () => {
             setLoading(true);
             fetchData(prev, "PREV");
         } else {
-            // setSelected(value);
-            // setPage("GALLERY");
             const url = `${domain}/g/${galleries[value].gid}/${galleries[value].token}`;
             await open(url);
         }
@@ -156,8 +158,8 @@ const App = () => {
                 <Text>Do you really want to exit?</Text>
                 <SelectInput
                     items={[
-                        { label: "Yes", value: 0 },
-                        { label: "No", value: 1 }
+                        { label: "[ Yes ]", value: 0 },
+                        { label: "[ No ]", value: 1 }
                     ]}
                     onSelect={exitHandler}
                 />
