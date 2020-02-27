@@ -1,6 +1,6 @@
 {
     "name": "ehink",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "A simple E-hentai CLI",
     "main": "index.js",
     "bin": {
