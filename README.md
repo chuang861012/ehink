@@ -2,7 +2,7 @@
 ![image](https://github.com/chuang861012/ehink/blob/master/demo.gif)
 ## Install
 ```
-$ npm install -g https://github.com/chuang861012/ehink.git
+$ npm install -g ehink
 ```
 ## Usage
 ### Command
