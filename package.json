@@ -11,7 +11,23 @@
         "build": "babel src --out-dir=build",
         "prepare": "npm run build"
     },
-    "keywords":["exhentai","e-hentai","ehentai","hentai","cli","react","ink"],
+    "homepage": "https://github.com/chuang861012/ehink#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/chuang861012/ehink.git"
+    },
+    "bugs": {
+        "url": "https://github.com/chuang861012/ehink/issues"
+    },
+    "keywords": [
+        "exhentai",
+        "e-hentai",
+        "ehentai",
+        "hentai",
+        "cli",
+        "react",
+        "ink"
+    ],
     "author": "chuang861012",
     "license": "GNU General Public License v3.0",
     "dependencies": {
