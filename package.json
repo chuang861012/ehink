@@ -1,7 +1,7 @@
 {
     "name": "ehink",
     "version": "1.0.0",
-    "description": "",
+    "description": "A simple E-hentai CLI",
     "main": "index.js",
     "bin": {
         "ehink": "build/index.js"
@@ -11,8 +11,9 @@
         "build": "babel src --out-dir=build",
         "prepare": "npm run build"
     },
+    "keywords":["exhentai","e-hentai","ehentai","hentai","cli","react","ink"],
     "author": "chuang861012",
-    "license": "ISC",
+    "license": "GNU General Public License v3.0",
     "dependencies": {
         "@babel/polyfill": "^7.8.3",
         "@babel/preset-react": "^7.8.3",
