@@ -1,5 +1,5 @@
 # ehink - A simple E-hentai CLI.
-![image](https://github.com/chuang861012/ehink/blob/master/demo.gif)
+![image](https://raw.githubusercontent.com/chuang861012/ehink/master/demo.gif)
 ## Install
 ```
 $ npm install -g ehink
