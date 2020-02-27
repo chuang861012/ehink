@@ -1,12 +1,13 @@
-# enink - A simple E-hentai CLI.
+# ehink - A simple E-hentai CLI.
+![image](https://github.com/chuang861012/ehink/blob/master/demo.gif)
 ## Install
 ```
-$ npm install -g elink
+$ npm install -g https://github.com/chuang861012/ehink.git
 ```
 ## Usage
 ### Command
 ```
-$ elink
+$ ehink
 ```
 #### Entry
 - E-hentai
